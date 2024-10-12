@@ -1,4 +1,4 @@
-package com.alibou.security.auth;
+package com.alibou.security.auth.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationRequest {
 
-  private String email;
-  String password;
+    private String email;
+    private String password;
 }
