@@ -4,6 +4,8 @@ import com.alibou.security.user.model.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "token")
 public class Token {
@@ -11,7 +13,7 @@ public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native")
-    public Integer id;
+    public Long id;
 
     @Column(unique = true)
     public String token;
@@ -27,11 +29,11 @@ public class Token {
     @JoinColumn(name = "user_id")
     public User user;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -73,5 +75,18 @@ public class Token {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Token token1 = (Token) o;
+        return revoked == token1.revoked && expired == token1.expired && Objects.equals(id, token1.id) && Objects.equals(token, token1.token) && tokenType == token1.tokenType && Objects.equals(user, token1.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, token, tokenType, revoked, expired, user);
     }
 }

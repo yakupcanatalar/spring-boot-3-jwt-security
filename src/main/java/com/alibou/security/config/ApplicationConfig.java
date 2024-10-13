@@ -2,7 +2,6 @@ package com.alibou.security.config;
 
 import com.alibou.security.auth.service.ApplicationAuditAware;
 import com.alibou.security.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -39,7 +38,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuditorAware<Integer> auditorAware() {
+    public AuditorAware<Long> auditorAware() {
         return new ApplicationAuditAware();
     }
 

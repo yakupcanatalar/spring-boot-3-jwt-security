@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +18,7 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name = "native")
-  private Integer id;
+  private Long id;
 
   private String firstname;
 
@@ -68,11 +69,11 @@ public class User implements UserDetails {
     return true;
   }
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -118,5 +119,18 @@ public class User implements UserDetails {
 
   public void setTokens(List<Token> tokens) {
     this.tokens = tokens;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    User user = (User) o;
+    return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(tokens, user.tokens);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, firstname, lastname, email, password, role, tokens);
   }
 }
