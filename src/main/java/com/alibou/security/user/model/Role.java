@@ -14,21 +14,19 @@ import static com.alibou.security.user.model.Permission.ADMIN_DELETE;
 import static com.alibou.security.user.model.Permission.ADMIN_READ;
 import static com.alibou.security.user.model.Permission.ADMIN_UPDATE;
 
-@RequiredArgsConstructor
 public enum Role {
 
     USER(Collections.emptySet()),
-    ADMIN(
-            Set.of(
-                    ADMIN_READ,
-                    ADMIN_UPDATE,
-                    ADMIN_DELETE,
-                    ADMIN_CREATE
-            )
-    );
+    ADMIN(Set.of(ADMIN_READ,
+            ADMIN_UPDATE,
+            ADMIN_DELETE,
+            ADMIN_CREATE));
 
-    @Getter
     private final Set<Permission> permissions;
+
+    Role(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
 
     public List<SimpleGrantedAuthority> getAuthorities() {
         var authorities = getPermissions()
@@ -37,5 +35,9 @@ public enum Role {
                 .collect(Collectors.toList());
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
         return authorities;
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
     }
 }

@@ -1,16 +1,7 @@
 package com.alibou.security.auth.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class AuthenticationRequest {
+import org.jetbrains.annotations.NotNull;
 
-    private String email;
-    private String password;
+public record AuthenticationRequest(@NotNull String email, @NotNull String password) {
 }

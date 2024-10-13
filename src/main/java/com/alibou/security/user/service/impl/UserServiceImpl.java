@@ -13,11 +13,16 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
+
+    public UserServiceImpl(PasswordEncoder passwordEncoder,
+                           UserRepository repository) {
+        this.passwordEncoder = passwordEncoder;
+        this.repository = repository;
+    }
 
     @Override
     public void changePassword(@NotNull ChangePasswordRequest request, @NotNull Principal connectedUser) {
@@ -25,16 +30,16 @@ public class UserServiceImpl implements UserService {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
         // check if the current password is correct
-        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
             throw new IllegalStateException("Wrong password");
         }
         // check if the two new passwords are the same
-        if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
+        if (!request.newPassword().equals(request.confirmationPassword())) {
             throw new IllegalStateException("Password are not the same");
         }
 
         // update the password
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
 
         // save the new password
         repository.save(user);
